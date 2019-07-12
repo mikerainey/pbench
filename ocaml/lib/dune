@@ -1,0 +1,10 @@
+(library
+  (name lib)
+  (libraries str unix xlib)
+  (public_name pbench.lib))
+
+(env
+  (dev
+    (flags (:standard -open Xlib -warn-error -A)))
+  (release
+    (flags (:standard -open Xlib -warn-error -A))))

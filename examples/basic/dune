@@ -1,0 +1,10 @@
+(executables
+  (names basic fib)
+  (libraries pbench.xlib pbench.lib)
+  (public_names basic fib))
+
+(env
+  (dev
+    (flags (:standard -open Lib -warn-error -A)))
+  (release
+    (flags (:standard -open Lib  -warn-error -A))))
