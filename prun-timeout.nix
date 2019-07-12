@@ -6,7 +6,7 @@
 stdenv.mkDerivation rec {
   name = "prun-timeout";
 
-  src = ./prun_timeout;
+  src = ./timeout;
 
   buildInputs =  [ gcc ];
 

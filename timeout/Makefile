@@ -8,4 +8,4 @@ $(TIMEOUT): $(TIMEOUT_SCR)
 	gcc -Wno-implicit-function-declaration -o $@ $<
 
 clean:
-	rm $(TIMEOUT)
+	rm -f $(TIMEOUT)

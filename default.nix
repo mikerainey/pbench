@@ -18,6 +18,8 @@ stdenv.mkDerivation rec {
   buildInputs =
     [ R myTexlive makeWrapper pbenchOcaml prunTimeout pbenchExamples ];
 
+  dontBuild = true;
+
   installPhase = ''
     mkdir -p $out
   
@@ -51,6 +53,7 @@ stdenv.mkDerivation rec {
     mkdir -p $out/doc/
     cp ${pbenchDoc}/*.html $out/doc
     cp ${pbenchDoc}/*.pdf $out/doc
+    cp ${pbenchDoc}/*.md $out/doc
   '';
 
   meta = {

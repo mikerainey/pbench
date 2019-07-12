@@ -13,7 +13,7 @@ stdenv.mkDerivation rec {
 
   installPhase = ''
     mkdir -p $out
-    cp *.html *.pdf $out
+    cp *.html *.pdf *.md $out
   '';
 
   meta = {
