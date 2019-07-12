@@ -3,6 +3,7 @@
   pbenchOcaml ? import ./pbench-ocaml.nix { buildDunePackage = pkgs.ocamlPackages.buildDunePackage; },
   prunTimeout ? import ./prun-timeout.nix { pkgs = pkgs; },
   pbenchExamples ? import ./pbench-examples.nix { buildDunePackage = pkgs.ocamlPackages.buildDunePackage; pbench = pbenchOcaml; },
+  pbenchDoc ? import ./pbench-doc.nix { pkgs = pkgs; },
   gcc ? pkgs.gcc,
   R ? pkgs.R,
   myTexlive ? pkgs.texlive.combined.scheme-small,
@@ -46,11 +47,15 @@ stdenv.mkDerivation rec {
         --prefix PATH ":" $out/examples/others \
         --prefix PATH ":" $out/ \
         --add-flags "-skip make"
+
+    mkdir -p $out/doc/
+    cp ${pbenchDoc}/*.html $out/doc
+    cp ${pbenchDoc}/*.pdf $out/doc
   '';
 
   meta = {
-    description = "Parallel algorithm benchmarking toolkit.";
-    license = "MIT";
+    description = "Program benchmarking toolkit.";
+    license = "Apache";
     homepage = http://deepsea.inria.fr/pbench/;
   };
 

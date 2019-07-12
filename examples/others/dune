@@ -1,0 +1,14 @@
+(executables
+  (names other)
+  (libraries pbench.xlib pbench.lib)
+  (public_names other))
+
+(install
+ (files speedup.sh test.sh test2.sh test3.sh)
+ (section bin))
+ 
+(env
+  (dev
+    (flags (:standard -open Lib -open Xlib -warn-error -A)))
+  (release
+    (flags (:standard -open Lib -open Xlib -warn-error -A))))
