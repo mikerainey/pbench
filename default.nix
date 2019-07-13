@@ -1,38 +1,51 @@
 { pkgs   ? import <nixpkgs> {},
   stdenv ? pkgs.stdenv,
-  pbenchOcaml ? import ./pbench-ocaml.nix { buildDunePackage = pkgs.ocamlPackages.buildDunePackage; },
-  prunTimeout ? import ./prun-timeout.nix { pkgs = pkgs; },
-  pbenchExamples ? import ./pbench-examples.nix { buildDunePackage = pkgs.ocamlPackages.buildDunePackage; pbench = pbenchOcaml; },
-  pbenchDoc ? import ./pbench-doc.nix { pkgs = pkgs; },
+  sources ? import ./pbench-local-sources.nix,
   gcc ? pkgs.gcc,
   R ? pkgs.R,
   myTexlive ? pkgs.texlive.combined.scheme-small,
   makeWrapper ? pkgs.makeWrapper
 }:
 
+let
+
+  callPackage = pkgs.lib.callPackageWith (pkgs // sources // self);
+
+  self = {
+
+    pkgs = pkgs;
+    buildDunePackage = pkgs.ocamlPackages.buildDunePackage;
+    myTexlive = myTexlive;
+    gcc = gcc;
+    R = R;
+    makeWrapper = makeWrapper;
+
+    pbenchOcaml = callPackage "${sources.pbenchSrc}/pbench-ocaml.nix" { };
+    prunTimeout = callPackage "${sources.pbenchSrc}/prun-timeout.nix" { };
+    pbenchDoc = callPackage "${sources.pbenchSrc}/pbench-doc.nix" { };
+    pbench = callPackage "${sources.pbenchSrc}/pbench.nix" { };
+    
+  };
+
+in
+
+with self;
+
+let     pbenchExamples = callPackage "${sources.pbenchSrc}/pbench-examples.nix" { };
+in
+
 stdenv.mkDerivation rec {
-  name = "pbench";
+  name = "pbench-default";
 
-  src = ./.;
+  src = sources.pbenchSrc;
 
-  buildInputs =
-    [ R myTexlive makeWrapper pbenchOcaml prunTimeout pbenchExamples ];
+  buildInputs = [ makeWrapper ];
 
   dontBuild = true;
-
+  
   installPhase = ''
     mkdir -p $out
-  
-    cp ${prunTimeout}/prun_timeout $out/
-
-    cp ${pbenchOcaml}/bin/prun $out/prun
-    wrapProgram $out/prun \
-        --prefix PATH ":" $out/
-
-    cp ${pbenchOcaml}/bin/pplot $out/pplot
-    wrapProgram $out/pplot \
-        --prefix PATH ":" ${myTexlive}/bin \
-        --prefix PATH ":" ${R}/bin
+    cp -r ${pbench}/* $out
 
     mkdir -p $out/examples
     mkdir -p $out/examples/basic
@@ -49,17 +62,6 @@ stdenv.mkDerivation rec {
         --prefix PATH ":" $out/examples/others \
         --prefix PATH ":" $out/ \
         --add-flags "-skip make"
-
-    mkdir -p $out/doc/
-    cp ${pbenchDoc}/*.html $out/doc
-    cp ${pbenchDoc}/*.pdf $out/doc
-    cp ${pbenchDoc}/*.md $out/doc
   '';
-
-  meta = {
-    description = "Program benchmarking toolkit.";
-    license = "Apache";
-    homepage = http://deepsea.inria.fr/pbench/;
-  };
 
 }
