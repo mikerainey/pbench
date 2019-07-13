@@ -15,9 +15,9 @@ let
 
     pkgs = pkgs;
     buildDunePackage = pkgs.ocamlPackages.buildDunePackage;
-    myTexlive = myTexlive;
     gcc = gcc;
     R = R;
+    myTexlive = myTexlive;
     makeWrapper = makeWrapper;
 
     pbenchOcaml = callPackage "${sources.pbenchSrc}/pbench-ocaml.nix" { };
@@ -31,8 +31,7 @@ in
 
 with self;
 
-let     pbenchExamples = callPackage "${sources.pbenchSrc}/pbench-examples.nix" { };
-in
+let pbenchExamples = callPackage "${sources.pbenchSrc}/pbench-examples.nix" { }; in
 
 stdenv.mkDerivation rec {
   name = "pbench-default";
