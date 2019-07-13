@@ -1,6 +1,6 @@
 { pkgs   ? import <nixpkgs> {},
   stdenv ? pkgs.stdenv,
-  sources ? import ./pbench-local-sources.nix,
+  sources ? import ./pbench-github-sources.nix,
   gcc ? pkgs.gcc,
   R ? pkgs.R,
   myTexlive ? pkgs.texlive.combined.scheme-small,
