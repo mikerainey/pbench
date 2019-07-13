@@ -1,12 +1,10 @@
-{ pkgs   ? import <nixpkgs> {},
-  stdenv ? pkgs.stdenv,
-  gcc ? pkgs.gcc,
+{ stdenv, prunTimeoutSrc, gcc
 }:
 
 stdenv.mkDerivation rec {
   name = "prun-timeout";
 
-  src = ./timeout;
+  src = prunTimeoutSrc;
 
   buildInputs =  [ gcc ];
 

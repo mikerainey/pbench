@@ -1,13 +1,9 @@
-{ pkgs   ? import <nixpkgs> {},
-  stdenv ? pkgs.stdenv,
-  pandoc ? pkgs.pandoc,
-  myTexlive ? pkgs.texlive.combined.scheme-small
-}:
+{ stdenv, pbenchDocSrc, pandoc, myTexlive }:
 
 stdenv.mkDerivation rec {
   name = "pbench-doc";
 
-  src = ./doc;
+  src = pbenchDocSrc;
 
   buildInputs = [ pandoc myTexlive ];
 
