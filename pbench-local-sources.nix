@@ -1,11 +1,13 @@
 let pkgs = import <nixpkgs> {}; in
 
+let   pbenchSrc = ./.; in
+
 {
 
-  pbenchSrc = ./.;
-  pbenchOcamlSrc = ./ocaml;
-  prunTimeoutSrc = ./timeout;
-  pbenchDocSrc = ./doc;
-  pbenchExamplesSrc = ./examples;
+  pbenchSrc = pbenchSrc;
+  pbenchOcamlSrc = "${pbenchSrc}/ocaml";
+  prunTimeoutSrc = "${pbenchSrc}/timeout";
+  pbenchDocSrc = "${pbenchSrc}/doc";
+  pbenchExamplesSrc = "${pbenchSrc}/examples";
 
 }
