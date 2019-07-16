@@ -53,6 +53,8 @@ stdenv.mkDerivation rec {
     wrapProgram $out/examples/basic/basic \
         --prefix PATH ":" $out/examples/basic \
         --prefix PATH ":" $out/ \
+        --prefix PATH ":" ${myTexlive}/bin \
+        --prefix PATH ":" ${R}/bin \
         --add-flags "-skip make"
     mkdir -p $out/examples/others
     cp ${pbenchExamples}/bin/other $out/examples/others/
@@ -60,6 +62,8 @@ stdenv.mkDerivation rec {
     wrapProgram $out/examples/others/other \
         --prefix PATH ":" $out/examples/others \
         --prefix PATH ":" $out/ \
+        --prefix PATH ":" ${myTexlive}/bin \
+        --prefix PATH ":" ${R}/bin \
         --add-flags "-skip make"
   '';
 
