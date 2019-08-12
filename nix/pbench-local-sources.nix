@@ -1,6 +1,6 @@
 let pkgs = import <nixpkgs> {}; in
 
-let pbenchSrc = ./.; in
+let pbenchSrc = ../.; in
 
 {
 
