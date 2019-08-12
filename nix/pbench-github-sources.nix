@@ -3,8 +3,8 @@ let pkgs = import <nixpkgs> {}; in
 let pbenchSrc = pkgs.fetchFromGitHub {
     owner  = "mikerainey";
     repo   = "pbench";
-    rev    = "14cd6a256b72f22f58d3ea6b25a7f86812fc5ab5";
-    sha256 = "1sbz9z0g9df9mgi751xkbc5bqglvkqccrk0bj2kdxsa122kis96g";
+    rev    = "68f05d6d0b86d558d7362d4d40eece4d6ad5498a";
+    sha256 = "09p7pfzkldzngqfhdpqmfg8xjq8dp62fq3zv8936r9rx1bqiwwsi";
   };
 in
 
