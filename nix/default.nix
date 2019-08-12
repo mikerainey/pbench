@@ -20,10 +20,10 @@ let
     myTexlive = myTexlive;
     makeWrapper = makeWrapper;
 
-    pbenchOcaml = callPackage "${sources.pbenchSrc}/pbench-ocaml.nix" { };
-    prunTimeout = callPackage "${sources.pbenchSrc}/prun-timeout.nix" { };
-    pbenchDoc = callPackage "${sources.pbenchSrc}/pbench-doc.nix" { };
-    pbench = callPackage "${sources.pbenchSrc}/pbench.nix" { };
+    pbenchOcaml = callPackage "${sources.pbenchSrc}/nix/pbench-ocaml.nix" { };
+    prunTimeout = callPackage "${sources.pbenchSrc}/nix/prun-timeout.nix" { };
+    pbenchDoc = callPackage "${sources.pbenchSrc}/nix/pbench-doc.nix" { };
+    pbench = callPackage "${sources.pbenchSrc}/nix/pbench.nix" { };
     
   };
 
@@ -31,7 +31,7 @@ in
 
 with self;
 
-let pbenchExamples = callPackage "${sources.pbenchSrc}/pbench-examples.nix" { }; in
+let pbenchExamples = callPackage "${sources.pbenchSrc}/nix/pbench-examples.nix" { }; in
 
 stdenv.mkDerivation rec {
   name = "pbench-default";
