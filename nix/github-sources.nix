@@ -1,11 +1,11 @@
 let pkgs = import <nixpkgs> {}; in
 
 let pbenchSrc = pkgs.fetchFromGitHub {
-    owner  = "mikerainey";
-    repo   = "pbench";
-    rev    = "68f05d6d0b86d558d7362d4d40eece4d6ad5498a";
-    sha256 = "09p7pfzkldzngqfhdpqmfg8xjq8dp62fq3zv8936r9rx1bqiwwsi";
-  };
+      owner  = "mikerainey";
+      repo   = "pbench";
+      rev    = "4cc46abdb3ae95f2b9355fe29fd9a932f0b5e647";
+      sha256 = "100rp8nsrs2a9xixc2pkvv546xpi010wii2vr6dmkgfrdgj4jin4";
+    };
 in
 
 let
