@@ -1,6 +1,7 @@
 { pkgs   ? import <nixpkgs> {},
   stdenv ? pkgs.stdenv,
-  pbench ? import ./default.nix { pkgs = pkgs; }
+  sources ? import ./local-sources.nix,
+  pbench ? import sources.pbench { pkgs = pkgs; }
 }:
   
 stdenv.mkDerivation {
@@ -8,8 +9,6 @@ stdenv.mkDerivation {
   buildInputs = [ pbench ];
   shellHook = ''
     export PBENCH_PATH=${pbench}
-    export PBENCH_EXAMPLES_PATH=$PBENCH_PATH/examples
-    export PBENCH_DOC_PATH=$PBENCH_PATH/share/doc/
     export PATH=$PBENCH_PATH:$PATH
   '';
 }

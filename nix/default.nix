@@ -1,70 +1,65 @@
 { pkgs   ? import <nixpkgs> {},
   stdenv ? pkgs.stdenv,
-  sources ? import ./pbench-github-sources.nix,
   gcc ? pkgs.gcc,
   R ? pkgs.R,
   myTexlive ? pkgs.texlive.combined.scheme-small,
-  makeWrapper ? pkgs.makeWrapper
+  makeWrapper ? pkgs.makeWrapper,
+  pandoc ? pkgs.pandoc,
+  sources ? import ./local-sources.nix,
+  prunTimeout ? import sources.prunTimeout {},
+  pbenchOcaml ? import sources.pbenchOcaml { pkgs = pkgs; stdenv = stdenv;
+                                             pbenchOcamlSrc = sources.pbenchOcamlSrc; }
 }:
 
-let
-
-  callPackage = pkgs.lib.callPackageWith (pkgs // sources // self);
-
-  self = {
-
-    pkgs = pkgs;
-    buildDunePackage = pkgs.ocamlPackages.buildDunePackage;
-    gcc = gcc;
-    R = R;
-    myTexlive = myTexlive;
-    makeWrapper = makeWrapper;
-
-    pbenchOcaml = callPackage "${sources.pbenchSrc}/nix/pbench-ocaml.nix" { };
-    prunTimeout = callPackage "${sources.pbenchSrc}/nix/prun-timeout.nix" { };
-    pbenchDoc = callPackage "${sources.pbenchSrc}/nix/pbench-doc.nix" { };
-    pbench = callPackage "${sources.pbenchSrc}/nix/pbench.nix" { };
-    
-  };
-
+let pbenchDoc =
+      stdenv.mkDerivation rec {
+        name = "pbench-doc";
+        
+        src = "${sources.pbenchSrc}/doc";
+        
+        buildInputs = [ pandoc myTexlive ];
+        
+        installPhase = ''
+          mkdir -p $out
+          cp *.html *.pdf *.md $out
+          '';
+      };
 in
 
-with self;
-
-let pbenchExamples = callPackage "${sources.pbenchSrc}/nix/pbench-examples.nix" { }; in
-
 stdenv.mkDerivation rec {
-  name = "pbench-default";
+  name = "pbench";
 
   src = sources.pbenchSrc;
 
-  buildInputs = [ makeWrapper ];
+  buildInputs =
+    [ R myTexlive makeWrapper pbenchOcaml prunTimeout ];
 
   dontBuild = true;
-  
+
   installPhase = ''
     mkdir -p $out
-    cp -r ${pbench}/* $out
+  
+    cp ${prunTimeout}/prun_timeout $out/
 
-    mkdir -p $out/examples
-    mkdir -p $out/examples/basic
-    cp ${pbenchExamples}/bin/basic $out/examples/basic/
-    cp ${pbenchExamples}/bin/fib $out/examples/basic/
-    wrapProgram $out/examples/basic/basic \
-        --prefix PATH ":" $out/examples/basic \
-        --prefix PATH ":" $out/ \
+    cp ${pbenchOcaml}/bin/prun $out/prun
+    wrapProgram $out/prun \
+        --prefix PATH ":" $out/
+
+    cp ${pbenchOcaml}/bin/pplot $out/pplot
+    wrapProgram $out/pplot \
         --prefix PATH ":" ${myTexlive}/bin \
-        --prefix PATH ":" ${R}/bin \
-        --add-flags "-skip make"
-    mkdir -p $out/examples/others
-    cp ${pbenchExamples}/bin/other $out/examples/others/
-    cp ${pbenchExamples}/bin/*.sh $out/examples/others/
-    wrapProgram $out/examples/others/other \
-        --prefix PATH ":" $out/examples/others \
-        --prefix PATH ":" $out/ \
-        --prefix PATH ":" ${myTexlive}/bin \
-        --prefix PATH ":" ${R}/bin \
-        --add-flags "-skip make"
+        --prefix PATH ":" ${R}/bin
+
+    mkdir -p $out/doc/
+    cp ${pbenchDoc}/*.html $out/doc
+    cp ${pbenchDoc}/*.pdf $out/doc
+    cp ${pbenchDoc}/*.md $out/doc
   '';
+
+  meta = {
+    description = "Program benchmarking toolkit.";
+    license = "Apache";
+    homepage = http://deepsea.inria.fr/pbench/;
+  };
 
 }

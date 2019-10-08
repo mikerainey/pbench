@@ -1,4 +1,8 @@
-{ buildDunePackage, pbenchOcamlSrc }:
+{ pkgs   ? import <nixpkgs> {},
+  stdenv ? pkgs.stdenv,
+  buildDunePackage ? pkgs.ocamlPackages.buildDunePackage,
+  pbenchOcamlSrc ? ../ocaml
+}:
 
 buildDunePackage rec {
   pname = "pbench";

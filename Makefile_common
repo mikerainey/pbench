@@ -56,6 +56,10 @@ PBENCH_OCAMLCOMP=ocamlc
 XLIB_LIBS=unix.cma str.cma
 endif
 
+prun_timeout:
+	make -C $(PBENCH_PATH)/timeout
+	mv $(PBENCH_PATH)/timeout/prun_timeout .
+
 %.pbench: %.ml $(PBENCH_SRC) prun_timeout
 	$(PBENCH_OCAMLCOMP) $(PBENCH_INCLUDES) $(PBENCH_LIBS) $(PBENCH_SRC) $< -o $@
 
@@ -67,7 +71,6 @@ endif
 # Clean
 
 pbench_clean:
-	make clean -C timeout
 	rm -f prun pbench prun_timeout
 	rm -f $(OCAML_PBENCH_PATH)/*.cmi $(OCAML_PBENCH_PATH)/*.cmo $(OCAML_PBENCH_PATH)/*.cma $(OCAML_PBENCH_PATH)/*.o $(OCAML_PBENCH_PATH)/*.cmx $(OCAML_PBENCH_PATH)/*.cmxa $(OCAML_PBENCH_PATH)/*.pbench 
 	rm -f $(XLIB_PATH)/*.cmi $(XLIB_PATH)/*.cmo $(XLIB_PATH)/*.cma $(XLIB_PATH)/*.cmxa $(XLIB_PATH)/*.o $(XLIB_PATH)/*.cmx
