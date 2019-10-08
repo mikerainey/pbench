@@ -37,9 +37,13 @@ manager](https://nixos.org/nix/). Then, from the `pbench` root folder,
 run `nix-shell`. Now, the `prun` and `pplot` binaries should be in the
 `$PATH`.
 
-Renderings of the documentation should also be available via
-`$PBENCH_DOC_PATH`, and the path to build destination of the
-`examples` folder shoudl be available via `$PBENCH_EXAMPLES_PATH`.
+Renderings of the documentation can be found under the path `$PBENCH_PATH`.
+
+### Custom client binaries
+
+It is also possible to use `pbench` as an Ocaml library for designing custom
+experiments. Examples of such custom, client binaries can be built by issuing 
+the command `nix-build custom.nix` from the `nix` folder.
 
 ### Local build
 
