@@ -6,11 +6,11 @@
   sources ? import ./local-sources.nix,
   prunTimeout ? import sources.prunTimeout {},
   benchSrc,
-  benchDune
+  bench
 }:
 
 stdenv.mkDerivation rec {
-  name = "bench";
+  name = "pbench-custom";
 
   src = benchSrc;
 
@@ -19,7 +19,7 @@ stdenv.mkDerivation rec {
   installPhase = ''
     mkdir -p $out
     ln -s ${prunTimeout}/prun_timeout $out/
-    cp ${benchDune}/bin/bench $out/
+    cp ${bench} $out/bench
     wrapProgram $out/bench \
       --prefix PATH ":" $out \
       --prefix PATH ":" ${myTexlive}/bin \
