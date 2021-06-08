@@ -7,8 +7,7 @@
   pandoc ? pkgs.pandoc,
   sources ? import ./local-sources.nix,
   prunTimeout ? import sources.prunTimeout {},
-  pbenchOcaml ? import sources.pbenchOcaml { pkgs = pkgs; stdenv = stdenv;
-                                             pbenchOcamlSrc = sources.pbenchOcamlSrc; }
+  pbenchOcaml ? import sources.pbenchOcaml { pbenchOcamlSrc = sources.pbenchOcamlSrc; }
 }:
 
 let pbenchDoc =
